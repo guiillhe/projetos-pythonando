@@ -1,0 +1,4 @@
+bebida
+comida
+limpeza
+Bebida
