@@ -1,2 +1,7 @@
 bebida;10;bebidas;vendedor;comprador;10;2023-11-04 00:09:34.864697
 bebida2;10;bebidas;vendedor;comprador;10;2023-11-04 00:13:49.427724
+arroz;10;comida;João;Maria;2;2023-12-26 21:57:00.671113
+arroz;10;comida;João;Maria;2;2023-12-26 22:03:49.624007
+arroz;10;comida;João;Maria;2;2023-12-26 22:04:07.033613
+arroz;10;comida;João;Maria;2;2023-12-26 22:04:23.221085
+arroz;10;comida;João;Maria;2;2023-12-26 22:04:43.351578

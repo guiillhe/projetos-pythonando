@@ -137,7 +137,52 @@ class  ControllerEstoque:
 
 
 class ControllerVenda:
-    pass
+    def cadastrar_venda(self, nome_produto, vendedor, comprador, quantidade_vendida):
+        x = DaoEstoque.listar()
+        temp =[]
 
-a = ControllerEstoque()
-a.listarProduto()
+        est = list(filter(lambda x: x.produto.nome == nome_produto, x))
+        if len(est) > 0:
+            for i in range(len(x)):
+                if x[i].produto.nome == nome_produto:
+                    if x[i].quantidade < quantidade_vendida:
+                        print('Quantidade indisponível!')
+                        return 2
+                    else:
+                        x[i].quantidade -= quantidade_vendida
+                        venda = Vendas(x[i].produto, vendedor, comprador, quantidade_vendida, datetime.now())
+                        DaoVenda.salvar(venda)
+                        print('Venda cadastrada com sucesso!')
+                        temp.append(x[i])
+                        for i in temp:
+                            if i.quantidade == 0:
+                                x.remove(i)
+                        with open('003-estoque.txt', 'w') as arquivo:
+                            for i in x:
+                                arquivo.write(i.produto.nome + ';' + str(i.produto.preco) + ';' + i.produto.categoria + ';' + str(i.quantidade))
+                                arquivo.write('\n')
+                        return 3
+        else:
+            print('Produto não encontrado!')
+            return 1
+
+    def listar_venda(self):
+        x = DaoVenda.listar()
+
+        if len(x) == 0:
+            print('Nenhuma venda cadastrada!')
+            return
+        else:
+            produtos = []
+            for i in x:
+                if i.itensVendidos.nome not in produtos:
+                    produtos.append(i.itensVendidos.nome)
+                else:
+                    produtos = list(map(lambda x: x.itensVendidos.nome, x))
+            for i in produtos:
+                print(f'Produto: {i} - Quantidade vendida: {produtos.count(i)}')
+
+
+
+a= ControllerVenda()
+a.listar_venda()

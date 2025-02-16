@@ -62,7 +62,7 @@ class DaoEstoque:
             for produto in cls.produtos:
                 produto = produto.replace('\n', '')
                 produto = produto.split(';')                
-                lista_produtos.append(Estoque(Produtos(produto[0], produto[1], produto[2]), produto[3]))
+                lista_produtos.append(Estoque(Produtos(produto[0], produto[1], produto[2]), int(produto[3])))
             return lista_produtos
         
 
@@ -125,5 +125,4 @@ class DaoPessoa:
                 lista_pessoas.append(Pessoa(pessoa[0], pessoa[1], pessoa[2], pessoa[3]))
             return lista_pessoas
         
-
 

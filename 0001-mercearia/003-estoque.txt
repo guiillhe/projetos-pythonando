@@ -1,2 +1,2 @@
 batata;8;comida;15
-arroz;10;comida;10
+arroz;10;comida;12
