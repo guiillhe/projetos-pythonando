@@ -14,6 +14,7 @@ class ControllerCategoria:
             print('Categoria cadastrada com sucesso!')
         else:
             print('Categoria já cadastrada!')
+
     
     def removerCategoria(self, categoria):
         x = DaoCategoria.listar()
@@ -23,6 +24,7 @@ class ControllerCategoria:
                 if x[i].categoria == categoria:
                     x.pop(i)
                     break
+            #TODO: colocar sem categoria no estoque.    
             with open('001-categorias.txt', 'w') as arquivo:
                 for i in x:
                     arquivo.write(i.categoria)
@@ -31,13 +33,18 @@ class ControllerCategoria:
         else:
             print('Categoria não encontrada!')
     
+
     def alterarCategoria(self, categoria, novaCategoria):
         x = DaoCategoria.listar()
         cat = list(filter(lambda x: x.categoria == categoria, x))
         nova = list(filter(lambda x: x.categoria == novaCategoria, x))
+
+
         if len(nova) > 0:
             print(f'Categoria {novaCategoria} já cadastrada, favor escolher outro nome de categoria!')
             return
+        
+
         if len(cat) > 0:
             
             for i in range(len(x)):
@@ -49,6 +56,7 @@ class ControllerCategoria:
                     arquivo.write(i.categoria)
                     arquivo.write('\n')
             print('Categoria alterada com sucesso!')
+            #TODO:  ALTERAR TAMBEM DO ESTOQUE
         else:
             print('Categoria não encontrada!')
 
@@ -70,6 +78,8 @@ class  ControllerEstoque:
 
         cat = list(filter(lambda x: x.categoria == categoria, x))
         est = list(filter(lambda x: x.produto.nome == nome, y))
+
+
         if len(cat) == 0:
             print('Categoria não encontrada!')
             return
@@ -99,11 +109,14 @@ class  ControllerEstoque:
         else:
             print('Produto não encontrado!')
     
+
     def alterarProduto(self, nome, novoNome, novoPreco, novaCategoria, novaQuantidade):
         x = DaoEstoque.listar()
         y = DaoCategoria.listar()
         est = list(filter(lambda x: x.produto.nome == nome, x))
         cat = list(filter(lambda x: x.categoria == novaCategoria, y))
+
+
         if len(cat) == 0:
             print('Categoria não encontrada!')
             return

@@ -33,6 +33,7 @@ class Fornecedor:
         self.telefone = telefone
         self.categoria = categoria
 
+
 class Pessoa:
     def __init__(self, nome, cpf, telefone,email, endereco):
         self.nome = nome
@@ -40,6 +41,7 @@ class Pessoa:
         self.telefone = telefone
         self.email = email
         self.endereco = endereco
+
 
 class Funcionario(Pessoa):
     def __init__(self, clt, nome, cpf, telefone, email, endereco):

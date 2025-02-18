@@ -1,4 +1,4 @@
-import google. as genai
+import google as genai
 
 genai.configure(api_key="GEMINI_API_KEY")
 

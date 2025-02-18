@@ -13,9 +13,15 @@ class DaoCategoria:
     def listar(cls):
         with open('001-categorias.txt', 'r') as arquivo:
             cls.categorias = arquivo.readlines()
+
+
             lista_categorias = []
+            
+            
             for categoria in cls.categorias:
                 lista_categorias.append(Categoria(categoria.replace('\n', '')))
+
+
             return lista_categorias
 
 
@@ -27,13 +33,13 @@ class DaoVenda:
             arquivo.writelines('\n')
 
 
-            
 
     @classmethod
     def listar(cls):
         with open('002-vendas.txt', 'r') as arquivo:
             cls.vendas = arquivo.readlines()
             lista_vendas = []
+
             
             for venda in cls.vendas:
                 venda.replace('\n', '')
@@ -53,6 +59,7 @@ class DaoEstoque:
         with open('003-estoque.txt', 'a') as arquivo:
             arquivo.write(produto.nome + ';' + str(produto.preco) + ';' + produto.categoria + ';' + str(quantidade))
             arquivo.writelines('\n')
+            
 
     @classmethod
     def listar(cls):
