@@ -158,13 +158,16 @@ class ControllerVenda:
         if len(est) > 0:
             for i in range(len(x)):
                 if x[i].produto.nome == nome_produto:
-                    if x[i].quantidade < quantidade_vendida:
+                    if x[i].quantidade <= quantidade_vendida:
                         print('Quantidade indisponível!')
                         return 2
                     else:
                         x[i].quantidade -= quantidade_vendida
                         venda = Vendas(x[i].produto, vendedor, comprador, quantidade_vendida, datetime.now())
+
+                        valor_venda = int(quantidade_vendida) * int(x[i].produto.preco)
                         DaoVenda.salvar(venda)
+                        print(valor_venda)
                         print('Venda cadastrada com sucesso!')
                         temp.append(x[i])
                         for i in temp:
@@ -174,7 +177,7 @@ class ControllerVenda:
                             for i in x:
                                 arquivo.write(i.produto.nome + ';' + str(i.produto.preco) + ';' + i.produto.categoria + ';' + str(i.quantidade))
                                 arquivo.write('\n')
-                        return 3
+                        return 3, valor_venda
         else:
             print('Produto não encontrado!')
             return 1
@@ -196,6 +199,9 @@ class ControllerVenda:
                 print(f'Produto: {i} - Quantidade vendida: {produtos.count(i)}')
 
 
-
+#batata;8;comida;15
 a= ControllerVenda()
-a.listar_venda()
+a.cadastrar_venda('batata', 'jao', 'zá', 2)
+b = ControllerEstoque()
+
+b.listarProduto()
