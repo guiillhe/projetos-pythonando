@@ -6,8 +6,8 @@ arroz;10;comida;João;Maria;2;2023-12-26 22:04:07.033613
 arroz;10;comida;João;Maria;2;2023-12-26 22:04:23.221085
 arroz;10;comida;João;Maria;2;2023-12-26 22:04:43.351578
 batata;8;comida;jao;zá;3;2025-02-18 22:22:51.365825
-batata;8;comida;jao;zá;8;2025-02-18 22:24:25.115352
+batata;8;comida;jao;zá;8;2025-02-19 22:24:25.115352
 batata;8;comida;jao;zá;1;2025-02-18 22:26:29.848919
-batata;8;comida;jao;zá;2;2025-02-18 22:26:57.324708
+batata;8;comida;jao;zá;2;2025-02-20 22:26:57.324708
 batata;8;comida;jao;zá;2;2025-02-18 22:27:58.085073
 batata;8;comida;jao;zá;2;2025-02-18 22:37:38.703952

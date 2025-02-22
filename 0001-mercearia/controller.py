@@ -182,7 +182,8 @@ class ControllerVenda:
             print('Produto não encontrado!')
             return 1
 
-    def listar_venda(self):
+
+    def relatorio_vendas(self):
         x = DaoVenda.listar()
 
         if len(x) == 0:
@@ -191,17 +192,53 @@ class ControllerVenda:
         else:
             produtos = []
             for i in x:
-                if i.itensVendidos.nome not in produtos:
-                    produtos.append(i.itensVendidos.nome)
+                nome_produto = i.itensVendidos.nome
+                quantidade_vendida= i.quantidadeVendida
+                tamanho = list(filter(lambda x: x['produto']== nome_produto, produtos))
+                if len(tamanho) > 0:
+                    produtos = list(map(lambda x: {'produto' : nome_produto, 'quantidade': int(x['quantidade']) + int(quantidade_vendida)} if (x['produto']== nome_produto) else(x), produtos))
+                    
                 else:
-                    produtos = list(map(lambda x: x.itensVendidos.nome, x))
-            for i in produtos:
-                print(f'Produto: {i} - Quantidade vendida: {produtos.count(i)}')
+                   produtos.append({'produto' : nome_produto,'quantidade' : quantidade_vendida })
+                   
+            ranking = sorted(produtos, key=lambda  k: int(k['quantidade']), reverse=True)  
+            print(f'='*10,'Produtos mais vendidos',f'='*10)    
+            for produto in ranking:
+                print(f"Produto: {produto['produto']} - Quantidade vendida: {produto['quantidade']}")
+            print(f'='*44)
 
 
+    def listar_venda(self, data_inicio, data_fim):
+        vendas = DaoVenda.listar()
+        data_inicio_1 = datetime.strptime(data_inicio, '%d/%m/%Y')
+        data_fim_1 = datetime.strptime(data_fim, '%d/%m/%Y')
+
+        vendas_selecionadas = list(filter(lambda x: datetime.strptime(x.data[:10],'%Y-%m-%d')>= data_inicio_1 
+                                          and datetime.strptime(x.data[:10],'%Y-%m-%d')<= data_fim_1 ,vendas))
+        
+        contador = 1
+        valor_total = 0
+
+        for venda in vendas_selecionadas:
+            print(
+
+f"""======== Venda {contador}=======
+Nome produto: {venda.itensVendidos.nome}
+Categoria   : {venda.itensVendidos.categoria}
+Data        : {venda.data[:10].replace('-','/')}
+Quantidade  : {venda.quantidadeVendida}
+Cliente     : {venda.comprador}
+Vendedor    : {venda.vendedor}
+====================="""
+                              
+            )
+            valor_total += int(venda.itensVendidos.preco) * int(venda.quantidadeVendida)
+            contador +=1
+        print(f"Valor total das vendas: R${float(valor_total):.2f}")
 #batata;8;comida;15
 a= ControllerVenda()
-a.cadastrar_venda('batata', 'jao', 'zá', 2)
-b = ControllerEstoque()
+a.listar_venda("01/01/2023","01/01/2025")
 
-b.listarProduto()
+# b = ControllerEstoque()
+
+# b.listarProduto()
