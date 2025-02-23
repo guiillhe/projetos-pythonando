@@ -1,4 +1,3 @@
-bebida
 comida
 limpeza
-Bebida
+bebida

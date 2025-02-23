@@ -16,15 +16,17 @@ class ControllerCategoria:
             print('Categoria já cadastrada!')
 
     
-    def removerCategoria(self, categoria):
+    def remover_categoria(self, categoria_remover):
         x = DaoCategoria.listar()
-        cat = list(filter(lambda x: x.categoria == categoria, x))
+        cat = list(filter(lambda x: x.categoria == categoria_remover, x))
+        #a_estoque =''
         if len(cat) > 0:
             for i in range(len(x)):
-                if x[i].categoria == categoria:
+                if x[i].categoria == categoria_remover:
                     x.pop(i)
-                    break
-            #TODO: colocar sem categoria no estoque.    
+                    break            
+            
+
             with open('001-categorias.txt', 'w') as arquivo:
                 for i in x:
                     arquivo.write(i.categoria)
@@ -32,9 +34,24 @@ class ControllerCategoria:
             print('Categoria removida com sucesso!')
         else:
             print('Categoria não encontrada!')
-    
+        
+        estoque = DaoEstoque.listar()
+        a_estoque = list(
+            map(
+                lambda x: Estoque(Produtos(x.produto.nome,x.produto.preco,'sem_categoria'),x.quantidade)if(x.produto.categoria == categoria_remover) else (x), 
+                estoque
+                )
+            )
+        
+        with open('003-estoque.txt','w') as arquivo:
+            for produto in a_estoque:
+                arquivo.writelines(f'{produto.produto.nome};{produto.produto.preco};{produto.produto.categoria};{produto.quantidade}\n')
 
-    def alterarCategoria(self, categoria, novaCategoria):
+
+
+                
+
+    def alterar_categoria(self, categoria, novaCategoria):
         x = DaoCategoria.listar()
         cat = list(filter(lambda x: x.categoria == categoria, x))
         nova = list(filter(lambda x: x.categoria == novaCategoria, x))
@@ -57,6 +74,18 @@ class ControllerCategoria:
                     arquivo.write('\n')
             print('Categoria alterada com sucesso!')
             #TODO:  ALTERAR TAMBEM DO ESTOQUE
+            estoque = DaoEstoque.listar()
+            a_estoque = list(
+                map(
+                    lambda x: Estoque(Produtos(x.produto.nome,x.produto.preco,novaCategoria),x.quantidade)if(x.produto.categoria == categoria) else (x), 
+                    estoque
+                    )
+                )
+            
+            with open('003-estoque.txt','w') as arquivo:
+                for produto in a_estoque:
+                    arquivo.writelines(f'{produto.produto.nome};{produto.produto.preco};{produto.produto.categoria};{produto.quantidade}\n')
+
         else:
             print('Categoria não encontrada!')
 
@@ -464,8 +493,8 @@ class ControllerFuncionario:
 
         
 #batata;8;comida;15
-a= ControllerFuncionario()
-a.remover_colaborador('12345678914')
+a= ControllerCategoria()
+a.alterar_categoria('Bebida','bebida')
 # b = ControllerEstoque()
 
 # b.listarProduto()
