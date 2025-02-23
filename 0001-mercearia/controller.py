@@ -235,10 +235,237 @@ Vendedor    : {venda.vendedor}
             valor_total += int(venda.itensVendidos.preco) * int(venda.quantidadeVendida)
             contador +=1
         print(f"Valor total das vendas: R${float(valor_total):.2f}")
-#batata;8;comida;15
-a= ControllerVenda()
-a.listar_venda("01/01/2023","01/01/2025")
 
+
+class ControllerFornecedor:
+    def cadastrar_fornecedor(self, nome, cnpj, telefone, categoria):
+        x = DaoFornecedor.listar()
+        lista_cnpj = list(filter(lambda x: x.cnpj ==cnpj, x))
+        lista_telefone = list(filter(lambda x: x.telefone ==telefone, x))
+
+        if len(lista_cnpj) > 0:
+            print('CNPJ já cadastrado!!!')
+        elif len(lista_telefone) > 0:
+            print('Já existe um fornecedor com o mesmo numero de telefone!!!')
+        else:
+            if len(cnpj) < 14 or len(cnpj) >14:
+                print('CNPJ inválido, favor verificar')
+            elif len(telefone) != 11:
+                print("Numero de telefone inválido")
+            else:
+                DaoFornecedor.salvar(Fornecedor(nome,cnpj,telefone,categoria))
+                print("Fornecedor salvo com sucesso")
+    
+
+    def alterar_fornecedor(self, cnpj_alterar, novo_nome, novo_cnpj, novo_telefone, nova_categoria):
+        dao_fornecedores = DaoFornecedor.listar()
+        
+        fornecedores = list(filter(lambda x: x.cnpj == cnpj_alterar, dao_fornecedores))
+
+        if len(fornecedores) == 0:
+            print('Fornecedor não encontrado, favor verificar')
+            
+        else:         
+            fornecedores = list(filter(lambda y: y.cnpj.strip() == novo_cnpj.strip(), dao_fornecedores))
+            
+            if len(fornecedores) == 0:
+                dao_fornecedores = list(map(lambda y: Fornecedor(novo_nome, novo_cnpj, novo_telefone, nova_categoria)if y.cnpj == cnpj_alterar else y, dao_fornecedores))
+                with open('004-fornecedores.txt','w') as arq:
+                    for fornecedor in dao_fornecedores:
+                        arq.writelines(f"{fornecedor.nome};{fornecedor.cnpj};{fornecedor.telefone};{fornecedor.categoria}\n")
+                    print('Fornecedor alterado com sucesso')
+            else:
+                print('Já existe um fornecedor com o cnpj que voce deseja usar')
+    
+
+    def remover_fornecedor(self, cnpj_excluir):
+        dao_fornecedor = DaoFornecedor.listar()
+
+        lista_fornecedores = list(filter(lambda x: x.cnpj == cnpj_excluir, dao_fornecedor))
+        
+        if len(lista_fornecedores) > 0:
+            for indice in range(len(dao_fornecedor)):
+                
+                if dao_fornecedor[indice].cnpj == cnpj_excluir:
+                    del dao_fornecedor[indice]
+                    break
+                    
+            with open('004-fornecedores.txt','w') as arq:
+                for fornecedor in dao_fornecedor:
+                    print(fornecedor)
+                    arq.writelines(f"{fornecedor.nome};{fornecedor.cnpj};{fornecedor.telefone};{fornecedor.categoria}\n")
+                print('Fornecedor removido com sucesso') 
+        else: 
+            print("O CNPJ do fornecedor nao foi localizado!!!")
+
+
+    def listar_fornecedor(self):
+        lista = DaoFornecedor.listar()
+        print(f"======== Lista Fornecedores ========")
+        for indice, fornecedor in enumerate(lista):
+            print(f'== Nome     : {fornecedor.nome} ==')
+            print(f'== CNPJ     : {fornecedor.cnpj} ==')
+            print(f'== Telefone : {fornecedor.telefone} ==')
+            print(f'== Categoria: {fornecedor.categoria} ==')
+        print(f"==============================")
+
+
+class ControllerCliente:
+    def cadastrar_cliente(self, nome, cpf, telefone,email, endereco):
+        x = DaoPessoa.listar()
+        lista_cpf = list(filter(lambda x: x.cpf ==cpf, x))
+        lista_telefone = list(filter(lambda x: x.telefone ==telefone, x))
+
+        if len(lista_cpf) > 0:
+            print('CPF já cadastrado!!!')
+        elif len(lista_telefone) > 0:
+            print('Já existe um cliente com o mesmo numero de telefone!!!')
+        else:
+            if len(cpf) < 11 or len(cpf) >11:
+                print('CPF inválido, favor verificar')
+            elif len(telefone) != 11:
+                print("Numero de telefone inválido")
+            else:
+                DaoPessoa.salvar(Pessoa(nome,cpf,telefone,email, endereco))
+                print("Cliente salvo com sucesso")
+    
+
+    def alterar_cliente(self, cpf_alterar, novo_nome, novo_cpf, novo_telefone, novo_email, novo_endereco):
+        dao_pessoas = DaoPessoa.listar()
+        
+        pessoas = list(filter(lambda x: x.cpf == cpf_alterar, dao_pessoas))
+
+        if len(pessoas) == 0:
+            print('Cliente não encontrado, favor verificar')
+            
+        else:         
+            pessoas = list(filter(lambda y: y.cpf.strip() == novo_cpf.strip(), dao_pessoas))
+            
+            if len(pessoas) == 0:
+                pessoas = list(map(lambda y: Pessoa(novo_nome, novo_cpf, novo_telefone, novo_email,novo_endereco)if y.cpf == cpf_alterar else y, dao_pessoas))
+                with open('006-pessoas.txt','w') as arq:
+                    for pessoa in pessoas:
+                        arq.writelines(f"{pessoa.nome};{pessoa.cpf};{pessoa.telefone};{pessoa.email};{pessoa.endereco}\n")
+                    print('Cliente alterado com sucesso')
+            else:
+                print('Já existe um Cliente com o cpf que voce deseja usar')
+    
+
+    def remover_cliente(self, cpf_excluir):
+        dao_clientes = DaoPessoa.listar()
+
+        lista_clientes = list(filter(lambda x: x.cpf == cpf_excluir, dao_clientes))
+        
+        if len(lista_clientes) > 0:
+            for indice in range(len(dao_clientes)):
+                
+                if dao_clientes[indice].cpf == cpf_excluir:
+                    del dao_clientes[indice]
+                    break
+                    
+            with open('006-pessoas.txt','w') as arq:
+                for cliente in dao_clientes:
+                    arq.writelines(f"{cliente.nome};{cliente.cpf};{cliente.telefone};{cliente.email};{cliente.endereco}\n")
+                print('Cliente removido com sucesso') 
+        else: 
+            print("O CPF  nao foi localizado!!!")
+
+
+    def listar_clientes(self):
+        lista = DaoPessoa.listar()
+        print(f"======== Lista Clientes ========")
+        for indice, cliente in enumerate(lista):
+            print(f'== Nome     : {cliente.nome} ==')
+            print(f'== CNPJ     : {cliente.cpf} ==')
+            print(f'== Telefone : {cliente.telefone} ==')
+            print(f'== Email: {cliente.email} ==')
+            print(f'== endereco: {cliente.endereco} ==')
+        print(f"==============================")
+
+class ControllerFuncionario:
+    def cadastrar_funcionario(self,clt, nome, cpf, telefone,email, endereco):
+        lista_funcionarios = DaoFuncionario.listar()
+        lista_cpf = list(filter(lambda x: x.cpf ==cpf, lista_funcionarios))
+        lista_telefone = list(filter(lambda x: x.telefone ==telefone, lista_funcionarios))
+        lista_clt = list(filter(lambda x: x.telefone ==telefone,lista_funcionarios ))
+
+        if len(lista_cpf) > 0:
+            print('CPF já cadastrado!!!')
+        elif len(lista_telefone) > 0:
+            print('Já existe um colaborador com o mesmo numero de telefone!!!')
+        elif len(lista_clt) > 0:
+            print('CLT já cadastrado!!!')
+    
+        else:
+            if len(cpf) < 11 or len(cpf) >11:
+                print('CPF inválido, favor verificar')
+            elif len(telefone) != 11:
+                print("Numero de telefone inválido")
+            else:
+                DaoFuncionario.salvar(Funcionario(clt,nome,cpf,telefone,email, endereco))
+                print("Colaborador salvo com sucesso")
+    
+
+    def alterar_colaborador(self, cpf_alterar, novo_clt, novo_nome, novo_cpf, novo_telefone, novo_email, novo_endereco):
+        lista_funcionarios = DaoFuncionario.listar()
+        
+        pessoas = list(filter(lambda x: x.cpf == cpf_alterar, lista_funcionarios))
+        colaboradores = list(filter(lambda y: y.clt.strip() == novo_clt.strip(), lista_funcionarios))
+        if len(pessoas) == 0:
+            print('Colaborador não encontrado, favor verificar')
+        elif len(colaboradores) != 0:
+            print('Ja existe um colaborador com o codigo clt informado') 
+        else:         
+            colaboradores = list(filter(lambda y: y.cpf.strip() == novo_cpf.strip(), lista_funcionarios))
+            
+            if len(colaboradores) == 0:
+                colaboradores = list(map(lambda y: Funcionario(novo_clt, novo_nome, novo_cpf, novo_telefone, novo_email,novo_endereco)if y.cpf == cpf_alterar else y, lista_funcionarios))
+                with open('005-funcionarios.txt','w') as arq:
+                    for colaborador in colaboradores:
+                        arq.writelines(f"{colaborador.clt};{colaborador.nome};{colaborador.cpf};{colaborador.telefone};{colaborador.email};{colaborador.endereco}\n")
+                    print('Colaborador alterado com sucesso')
+            else:
+                print('Já existe um Colaborador com o cpf que voce deseja usar')
+    
+
+    def remover_colaborador(self, cpf_excluir):
+        dao_funcionarios = DaoFuncionario.listar()
+
+        lista_clientes = list(filter(lambda x: x.cpf == cpf_excluir, dao_funcionarios))
+        
+        if len(lista_clientes) > 0:
+            for indice in range(len(dao_funcionarios)):
+                
+                if dao_funcionarios[indice].cpf == cpf_excluir:
+                    del dao_funcionarios[indice]
+                    break
+                    
+            with open('005-funcionarios.txt','w') as arq:
+                for funcionario in dao_funcionarios:
+                    arq.writelines(f"{funcionario.clt};{funcionario.nome};{funcionario.cpf};{funcionario.telefone};{funcionario.email};{funcionario.endereco}\n")
+                print('Colaborador removido com sucesso') 
+        else: 
+            print("O CPF  nao foi localizado!!!")
+
+
+    def listar_colaboradores(self):
+        lista = DaoFuncionario.listar()
+        print(f"======== Lista Funcionarios ========")
+        for indice, funcionario in enumerate(lista):
+            print(f'funcionario {indice+1}')
+            print(f'== CLT     : {funcionario.clt} ==')
+            print(f'== Nome     : {funcionario.nome} ==')
+            print(f'== CNPJ     : {funcionario.cpf} ==')
+            print(f'== Telefone : {funcionario.telefone} ==')
+            print(f'== Email: {funcionario.email} ==')
+            print(f'== endereco: {funcionario.endereco} ==')
+        print(f"==============================")
+
+
+        
+#batata;8;comida;15
+a= ControllerFuncionario()
+a.remover_colaborador('12345678914')
 # b = ControllerEstoque()
 
 # b.listarProduto()

@@ -78,7 +78,7 @@ class DaoFornecedor:
     def salvar(cls, fornecedor):
         with open('004-fornecedores.txt', 'a') as arquivo:
             arquivo.write(fornecedor.nome + ';' + fornecedor.cnpj + ';' + fornecedor.telefone + 
-                          ';' + fornecedor.endereco)
+                          ';' + fornecedor.categoria)
             arquivo.writelines('\n')
     
 
@@ -98,8 +98,8 @@ class DaoFuncionario:
     @classmethod
     def salvar(cls, funcionario):
         with open('005-funcionarios.txt', 'a') as arquivo:
-            arquivo.write(funcionario.nome + ';' + funcionario.cpf + ';' + funcionario.telefone + 
-                          ';' + funcionario.endereco + ';' + funcionario.cargo + ';' + funcionario.salario)
+            arquivo.write(funcionario.clt+';'+funcionario.nome + ';' + funcionario.cpf + ';' + funcionario.telefone + 
+                          ';' + funcionario.email + ';' + funcionario.endereco )
             arquivo.writelines('\n')
     
     @classmethod
@@ -118,7 +118,7 @@ class DaoPessoa:
     def salvar(cls, pessoa):
         with open('006-pessoas.txt', 'a') as arquivo:
             arquivo.write(pessoa.nome + ';' + pessoa.cpf + ';' + pessoa.telefone + 
-                          ';' + pessoa.endereco)
+                          ';'+pessoa.email+';' + pessoa.endereco)
             arquivo.writelines('\n')
     
     @classmethod
@@ -129,7 +129,7 @@ class DaoPessoa:
             for pessoa in cls.pessoas:
                 pessoa = pessoa.replace('\n', '')
                 pessoa = pessoa.split(';')
-                lista_pessoas.append(Pessoa(pessoa[0], pessoa[1], pessoa[2], pessoa[3]))
+                lista_pessoas.append(Pessoa(pessoa[0], pessoa[1], pessoa[2], pessoa[3], pessoa[4]))
             return lista_pessoas
         
 
