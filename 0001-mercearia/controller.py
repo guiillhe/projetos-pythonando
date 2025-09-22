@@ -492,9 +492,9 @@ class ControllerFuncionario:
 
 
         
-#batata;8;comida;15
-a= ControllerCategoria()
-a.alterar_categoria('Bebida','bebida')
-# b = ControllerEstoque()
+# #batata;8;comida;15
+# a= ControllerCategoria()
+# a.alterar_categoria('Bebida','bebida')
+# # b = ControllerEstoque()
 
-# b.listarProduto()
+# # b.listarProduto()
